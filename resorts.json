@@ -1,0 +1,72 @@
+{
+  "Lipa": {
+    "The Farm at San Benito": {
+      "desc": "A luxury wellness resort offering health retreats and eco-luxury villas.",
+      "price": "₱10,000 - ₱50,000 per night"
+    },
+    "Cintai Corito's Garden": {
+      "desc": "A Balinese-inspired garden resort perfect for relaxation and wellness.",
+      "price": "₱5,000 - ₱15,000 per night"
+    },
+    "Hotel 1925": {
+      "desc": "A boutique hotel featuring Spanish-Filipino architecture with elegant accommodations.",
+      "price": "₱4,000 - ₱8,000 per night"
+    }
+  },
+  "Batangas City": {
+    "Luks Lofts Hotel": {
+      "desc": "A modern luxury hotel with smart rooms and a private pool per suite.",
+      "price": "₱15,000 - ₱30,000 per night"
+    },
+    "PonteFino Hotel": {
+      "desc": "A stylish business hotel with excellent amenities in Batangas City.",
+      "price": "₱6,000 - ₱12,000 per night"
+    },
+    "Batangas Country Club": {
+      "desc": "A peaceful resort with lush gardens and cozy accommodations.",
+      "price": "₱3,500 - ₱7,500 per night"
+    }
+  },
+  "Nasugbu": {
+    "Pico de Loro Beach and Country Club": {
+      "desc": "A luxury beach resort with nature trails and pools.",
+      "price": "₱8,000 - ₱20,000 per night"
+    },
+    "Anvaya Cove": {
+      "desc": "An exclusive resort featuring a private beach and golf course.",
+      "price": "₱12,000 - ₱25,000 per night"
+    },
+    "Canyon Cove Hotel & Spa": {
+      "desc": "A beachfront hotel with scenic ocean views and family-friendly activities.",
+      "price": "₱5,000 - ₱10,000 per night"
+    }
+  },
+  "San Juan": {
+    "Acuatico Beach Resort": {
+      "desc": "A beachfront resort known for its infinity pool and water sports.",
+      "price": "₱10,000 - ₱18,000 per night"
+    },
+    "La Luz Beach Resort": {
+      "desc": "A laid-back beachfront resort perfect for relaxation.",
+      "price": "₱3,000 - ₱6,000 per night"
+    },
+    "Palm Beach Resort": {
+      "desc": "A private resort with great food and a peaceful ambiance.",
+      "price": "₱6,000 - ₱12,000 per night"
+    }
+  },
+  "Taal": {
+    "Taal Vista Hotel": {
+      "desc": "A historic hotel with breathtaking views of Taal Volcano.",
+      "price": "₱7,000 - ₱15,000 per night"
+    },
+    "Club Balai Isabel": {
+      "desc": "A lakeside resort with exciting water activities.",
+      "price": "₱5,000 - ₱12,000 per night"
+    },
+    "Paradores del Castillo": {
+      "desc": "A heritage hotel in Taal with a cozy ambiance and colonial design.",
+      "price": "₱4,500 - ₱9,000 per night"
+    }
+  }
+}
