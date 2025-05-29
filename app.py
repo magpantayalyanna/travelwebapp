@@ -3,78 +3,84 @@ import json
 import os
 
 app = Flask(__name__)
-app.secret_key = 'secret-key'
 
-# Load resorts data once at startup
+# Load resorts data
 with open('resorts.json', encoding='utf-8') as f:
-    resorts_data = json.load(f)
+    resort_data = json.load(f)
 
-BOOKINGS_FILE = 'bookingsDetails.json'
-
-def save_booking(data):
-    if os.path.exists(BOOKINGS_FILE):
-        with open(BOOKINGS_FILE, 'r', encoding='utf-8') as f:
-            try:
-                bookings = json.load(f)
-            except json.JSONDecodeError:
-                bookings = []
-    else:
-        bookings = []
-
-    bookings.append(data)
-
-    with open(BOOKINGS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(bookings, f, indent=4, ensure_ascii=False)
-
+BOOKING_FILE = os.path.join(os.path.dirname(__file__), 'bookingDetails.json')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    name = contact = date = ''
     selected_city = None
     selected_resort = None
     resort_info = None
     message = None
 
+    name = ''
+    contact = ''
+    date = ''
+
     if request.method == 'POST':
+        action = request.form.get('action')
+        selected_city = request.form.get('city')
+        selected_resort = request.form.get('resort')
         name = request.form.get('name', '')
         contact = request.form.get('contact', '')
         date = request.form.get('date', '')
-        selected_city = request.form.get('city', None)
-        selected_resort = request.form.get('resort', None)
-        action = request.form.get('action', None)
 
         if action == 'Book Now':
-            if not all([name, contact, date, selected_city, selected_resort]):
-                message = "Please fill out all fields to book."
-            else:
-                booking_data = {
+            if all([name, contact, date, selected_city, selected_resort]):
+                resort_info = resort_data[selected_city][selected_resort]
+
+                booking = {
                     "name": name,
                     "contact": contact,
                     "date": date,
-                    "city": selected_city,
+                    "place": selected_city,
                     "resort": selected_resort,
-                    "resort_desc": resorts_data[selected_city][selected_resort]['desc'],
-                    "resort_price": resorts_data[selected_city][selected_resort]['price']
+                    "description": resort_info["desc"],
+                    "price": resort_info["price"]
                 }
-                save_booking(booking_data)
-                message = f"Thank you {name}, your booking for {selected_resort} in {selected_city} on {date} has been received!"
 
-        if selected_city and selected_resort:
-            resort_info = resorts_data[selected_city][selected_resort]
+                try:
+                    if os.path.exists(BOOKING_FILE):
+                        with open(BOOKING_FILE, 'r', encoding='utf-8') as f:
+                            bookings = json.load(f)
+                    else:
+                        bookings = []
+                except:
+                    bookings = []
 
-    cities = list(resorts_data.keys())
+                bookings.append(booking)
 
-    return render_template('index.html',
-                           name=name,
-                           contact=contact,
-                           date=date,
-                           cities=cities,
-                           resorts=resorts_data,
-                           selected_city=selected_city,
-                           selected_resort=selected_resort,
-                           resort_info=resort_info,
-                           message=message)
+                try:
+                    with open(BOOKING_FILE, 'w', encoding='utf-8') as f:
+                        json.dump(bookings, f, indent=4, ensure_ascii=False)
+                    message = f"Thank you, {name}! Your booking for {selected_resort} on {date} has been received! 🌴"
+                    name = ''
+                    contact = ''
+                    date = ''
+                except:
+                    message = "Sorry, there was a problem saving your booking."
 
+            else:
+                message = "Please fill out all fields before booking."
+
+        elif selected_city and selected_resort:
+            resort_info = resort_data[selected_city][selected_resort]
+
+    return render_template(
+        'index.html',
+        cities=resort_data,
+        selected_city=selected_city,
+        selected_resort=selected_resort,
+        resort_info=resort_info,
+        message=message,
+        name=name,
+        contact=contact,
+        date=date
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
