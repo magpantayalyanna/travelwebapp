@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Batangas Travel Planner</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <title>Batangas Travel Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-blue-100 via-teal-100 to-indigo-100 text-gray-800 font-sans min-h-screen">
-  <div class="max-w-5xl mx-auto p-8 mt-10 bg-white shadow-lg rounded-xl">
-    <h1 class="text-3xl font-bold mb-8 text-center text-blue-700">Batangas Travel Planner</h1>
-    <form method="POST">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        <!-- Left Column: Name, Contact, Date -->
-        <div class="space-y-5">
-          <div>
-            <label class="block font-semibold mb-1">Name</label>
-            <input type="text" name="name" value="{{ name }}" required class="w-full p-2 border rounded" />
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Contact Number</label>
-            <input type="text" name="contact" value="{{ contact }}" required class="w-full p-2 border rounded" />
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Preferred Date</label>
-            <input type="date" name="date" value="{{ date }}" required class="w-full p-2 border rounded" />
-          </div>
-        </div>
-        <!-- Right Column: City, Resort, Info -->
-        <div class="space-y-5">
-          <div>
-            <label class="block font-semibold mb-1">Select City</label>
-            <select name="city" onchange="this.form.submit()" required class="w-full p-2 border rounded">
-              <option disabled {% if not selected_city %}selected{% endif %}>-- Select City --</option>
-              {% for city in cities %}
-                <option value="{{ city }}" {% if city == selected_city %}selected{% endif %}>{{ city }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          {% if selected_city %}
-          <div>
-            <label class="block font-semibold mb-1">Select Resort in {{ selected_city }}</label>
-            <select name="resort" onchange="this.form.submit()" required class="w-full p-2 border rounded">
-              <option disabled {% if not selected_resort %}selected{% endif %}>-- Select Resort --</option>
-              {% for resort in resorts[selected_city].keys() %}
-                <option value="{{ resort }}" {% if resort == selected_resort %}selected{% endif %}>{{ resort }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          {% endif %}
-          {% if resort_info %}
-          <div class="p-4 bg-gray-100 rounded-lg mt-4">
-            <p><span class="font-semibold">Description:</span> {{ resort_info.desc }}</p>
-            <p><span class="font-semibold">Price:</span> {{ resort_info.price }}</p>
-          </div>
-          {% endif %}
-        </div>
-      </div>
+    <div class="max-w-5xl mx-auto p-8 mt-10 bg-white shadow-lg rounded-xl">
+        <h1 class="text-3xl font-bold mb-8 text-center text-blue-700">Batangas Travel Planner</h1>
 
-      {% if resort_info %}
-      <div class="text-center mt-6">
-        <input type="submit" name="action" value="Book Now" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer" />
-      </div>
-      {% endif %}
-    </form>
+        <form method="POST">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <!-- Left Column -->
+                <div class="space-y-5">
+                    <div>
+                        <label class="block font-semibold mb-1">Name</label>
+                        <input type="text" name="name" value="{{ name }}" required class="w-full p-2 border rounded" />
+                    </div>
 
-    {% if message %}
-    <div class="mt-6 text-center text-green-600 font-semibold text-lg">
-      🎉 {{ message }} 🌴
+                    <div>
+                        <label class="block font-semibold mb-1">Contact Number</label>
+                        <input type="text" name="contact" value="{{ contact }}" required class="w-full p-2 border rounded" />
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold mb-1">Preferred Date</label>
+                        <input type="date" name="date" value="{{ date }}" required class="w-full p-2 border rounded" />
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-5">
+                    <div>
+                        <label class="block font-semibold mb-1">Select City</label>
+                        <select name="city" onchange="this.form.submit()" required class="w-full p-2 border rounded">
+                            <option disabled {% if not selected_city %}selected{% endif %}>-- Select City --</option>
+                            {% for city in cities %}
+                                <option value="{{ city }}" {% if city == selected_city %}selected{% endif %}>{{ city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    {% if selected_city %}
+                    <div>
+                        <label class="block font-semibold mb-1">Select Resort in {{ selected_city }}</label>
+                        <select name="resort" onchange="this.form.submit()" required class="w-full p-2 border rounded">
+                            <option disabled {% if not selected_resort %}selected{% endif %}>-- Select Resort --</option>
+                            {% for resort in cities[selected_city] %}
+                                <option value="{{ resort }}" {% if resort == selected_resort %}selected{% endif %}>{{ resort }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
+                    {% if resort_info %}
+                    <div class="p-4 bg-gray-100 rounded-lg">
+                        <p><span class="font-semibold">Description:</span> {{ resort_info.desc }}</p>
+                        <p><span class="font-semibold">Price:</span> {{ resort_info.price | replace('₱', '&#8369;') | safe }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if resort_info %}
+            <div class="text-center mt-6">
+                <input type="submit" name="action" value="Book Now" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer" />
+            </div>
+            {% endif %}
+        </form>
+
+        {% if message %}
+        <div class="mt-6 text-center text-green-600 font-semibold text-lg">
+            {{ message }}
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
-  </div>
 </body>
 </html>
